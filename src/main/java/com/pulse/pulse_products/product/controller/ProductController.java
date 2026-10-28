@@ -1,30 +1,43 @@
 package com.pulse.pulse_products.product.controller;
 
+import com.pulse.pulse_products.product.dto.ProductRequestDTO;
 import com.pulse.pulse_products.product.dto.ProductResponseDTO;
+import com.pulse.pulse_products.product.entity.Product;
 import com.pulse.pulse_products.product.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.UUID;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
-    @GetMapping
-    public ProductResponseDTO create() {
-        ProductResponseDTO response = new ProductResponseDTO(UUID.randomUUID(),
-                "Teclado",
-                "Teclado Industrial",
-                new BigDecimal("199.90"),
-                5);
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
-        return productService.create(response);
+    @PostMapping
+    public ResponseEntity<ProductResponseDTO> create(
+            @Valid @RequestBody ProductRequestDTO request
+    ) {
+        Product product = new Product();
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        product.setAmount(request.amount());
+
+        Product createdProduct = productService.create(product);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(toResponse(createdProduct));
+    }
+
+    private ProductResponseDTO toResponse(Product product) {
+        return ProductResponseDTO.from(product);
     }
 }
