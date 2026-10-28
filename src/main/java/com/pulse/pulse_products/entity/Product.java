@@ -1,4 +1,4 @@
-package com.pulse.pulse_products.product.entity;
+package com.pulse.pulse_products.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.pulse.pulse_products.product.dto;
+package com.pulse.pulse_products.dto.request;
 
 import jakarta.validation.constraints.*;
 

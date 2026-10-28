@@ -1,6 +1,6 @@
-package com.pulse.pulse_products.product.repository;
+package com.pulse.pulse_products.repository;
 
-import com.pulse.pulse_products.product.entity.Product;
+import com.pulse.pulse_products.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,10 @@
-package com.pulse.pulse_products.product.controller;
+package com.pulse.pulse_products.controller;
 
-import com.pulse.pulse_products.product.dto.ProductRequestDTO;
-import com.pulse.pulse_products.product.dto.ProductResponseDTO;
-import com.pulse.pulse_products.product.entity.Product;
-import com.pulse.pulse_products.product.service.ProductService;
+import com.pulse.pulse_products.dto.request.ProductRequestDTO;
+import com.pulse.pulse_products.dto.response.ProductResponseDTO;
+import com.pulse.pulse_products.entity.Product;
+import com.pulse.pulse_products.mapper.ProductMapper;
+import com.pulse.pulse_products.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,9 +27,11 @@ import java.util.UUID;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductMapper productMapper;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductMapper productMapper) {
         this.productService = productService;
+        this.productMapper = productMapper;
     }
 
     @Operation(
@@ -50,11 +53,11 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> create(
             @Valid @RequestBody ProductRequestDTO request
     ) {
-        Product product = toEntity(request);
+        Product product = productMapper.toEntity(request);
         Product createdProduct = productService.create(product);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(toResponse(createdProduct));
+                .body(productMapper.toResponse(createdProduct));
     }
 
     @Operation(
@@ -83,7 +86,7 @@ public class ProductController {
             Pageable pageable
     ) {
         Page<Product> products = productService.findAll(pageable);
-        return ResponseEntity.ok(products.map(this::toResponse));
+        return ResponseEntity.ok(products.map(productMapper::toResponse));
     }
 
 
@@ -110,7 +113,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> findById(@PathVariable UUID id) {
         Product product = productService.findById(id);
-        return ResponseEntity.ok(toResponse(product));
+        return ResponseEntity.ok(productMapper.toResponse(product));
     }
 
     @Operation(
@@ -138,9 +141,9 @@ public class ProductController {
             @PathVariable UUID id,
             @Valid @RequestBody ProductRequestDTO request
     ) {
-        Product productToUpdate = toEntity(request);
+        Product productToUpdate = productMapper.toEntity(request);
         Product updatedProduct = productService.update(id, productToUpdate);
-        return ResponseEntity.ok(toResponse(updatedProduct));
+        return ResponseEntity.ok(productMapper.toResponse(updatedProduct));
     }
 
     @Operation(
@@ -167,18 +170,5 @@ public class ProductController {
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    private Product toEntity(ProductRequestDTO request) {
-        Product product = new Product();
-        product.setName(request.name());
-        product.setDescription(request.description());
-        product.setPrice(request.price());
-        product.setAmount(request.amount());
-        return product;
-    }
-
-    private ProductResponseDTO toResponse(Product product) {
-        return ProductResponseDTO.from(product);
     }
 }

@@ -1,7 +1,7 @@
 package com.pulse.pulse_products;
 
-import com.pulse.pulse_products.product.entity.Product;
-import com.pulse.pulse_products.product.repository.ProductRepository;
+import com.pulse.pulse_products.entity.Product;
+import com.pulse.pulse_products.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

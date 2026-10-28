@@ -1,6 +1,6 @@
-package com.pulse.pulse_products.product.dto;
+package com.pulse.pulse_products.dto.response;
 
-import com.pulse.pulse_products.product.entity.Product;
+import com.pulse.pulse_products.entity.Product;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

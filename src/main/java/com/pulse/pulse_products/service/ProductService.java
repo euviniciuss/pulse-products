@@ -1,10 +1,9 @@
-package com.pulse.pulse_products.product.service;
+package com.pulse.pulse_products.service;
 
-import com.pulse.pulse_products.product.entity.Product;
+import com.pulse.pulse_products.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public interface ProductService {

@@ -1,9 +1,10 @@
-package com.pulse.pulse_products.product.service;
+package com.pulse.pulse_products.service.impl;
 import com.pulse.pulse_products.exceptions.NotFoundException;
-import com.pulse.pulse_products.product.entity.Product;
-import com.pulse.pulse_products.product.repository.ProductRepository;
+import com.pulse.pulse_products.entity.Product;
+import com.pulse.pulse_products.repository.ProductRepository;
 
 
+import com.pulse.pulse_products.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public Product update(UUID id, Product productToUpdate) {
-       Product product = findProductOrThrow(id);
+        Product product = findProductOrThrow(id);
 
         product.setName(productToUpdate.getName());
         product.setDescription(productToUpdate.getDescription());
