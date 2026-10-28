@@ -1,6 +1,7 @@
 package com.pulse.pulse_products.service.impl;
 import com.pulse.pulse_products.dto.request.ProductRequestDTO;
 import com.pulse.pulse_products.dto.response.ProductResponseDTO;
+import com.pulse.pulse_products.exceptions.AlreadyExistsException;
 import com.pulse.pulse_products.exceptions.NotFoundException;
 import com.pulse.pulse_products.entity.Product;
 import com.pulse.pulse_products.mapper.ProductMapper;
@@ -26,6 +27,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDTO create(ProductRequestDTO request) {
+        if (productRepository.existsByName(request.name())) {
+            throw new AlreadyExistsException(
+                    "Já existe um produto cadastrado com esse nome."
+            );
+        }
+
         Product product = productMapper.toEntity(request);
 
         Product savedProduct = productRepository.save(product);
@@ -53,6 +60,12 @@ public class ProductServiceImpl implements ProductService {
             ProductRequestDTO request
     ) {
         Product product = findProductOrThrow(id);
+
+        if (productRepository.existsByNameAndIdNot(request.name(), id)) {
+            throw new AlreadyExistsException(
+                    "Já existe outro produto cadastrado com esse nome."
+            );
+        }
 
         product.setName(request.name());
         product.setDescription(request.description());
