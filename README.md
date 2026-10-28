@@ -85,7 +85,7 @@ A listagem aceita parâmetros de consulta (*query params*) para controlar a pagi
 Exemplo: listar os primeiros 10 produtos.
 
 ```http
-GET /api/products?page=0&size=10&sort=name,asc
+GET /api/products?page=0&size=10
 ```
 
 A paginação começa em zero: `page=0` representa a primeira página.
