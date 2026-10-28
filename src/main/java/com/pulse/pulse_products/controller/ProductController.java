@@ -2,8 +2,6 @@ package com.pulse.pulse_products.controller;
 
 import com.pulse.pulse_products.dto.request.ProductRequestDTO;
 import com.pulse.pulse_products.dto.response.ProductResponseDTO;
-import com.pulse.pulse_products.entity.Product;
-import com.pulse.pulse_products.mapper.ProductMapper;
 import com.pulse.pulse_products.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,11 +25,9 @@ import java.util.UUID;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductMapper productMapper;
 
-    public ProductController(ProductService productService, ProductMapper productMapper) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.productMapper = productMapper;
     }
 
     @Operation(
