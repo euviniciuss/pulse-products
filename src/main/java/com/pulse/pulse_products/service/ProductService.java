@@ -1,6 +1,7 @@
 package com.pulse.pulse_products.service;
 
-import com.pulse.pulse_products.entity.Product;
+import com.pulse.pulse_products.dto.request.ProductRequestDTO;
+import com.pulse.pulse_products.dto.response.ProductResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -8,13 +9,13 @@ import java.util.UUID;
 
 public interface ProductService {
 
-    Product create(Product product);
+    ProductResponseDTO create(ProductRequestDTO request);
 
-    Page<Product> findAll(Pageable pageable);
+    Page<ProductResponseDTO> findAll(Pageable pageable);
 
-    Product findById(UUID id);
+    ProductResponseDTO findById(UUID id);
 
-    Product update(UUID id, Product product);
+    ProductResponseDTO update(UUID id, ProductRequestDTO request);
 
     void delete(UUID id);
 }

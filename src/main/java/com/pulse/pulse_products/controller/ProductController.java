@@ -49,15 +49,14 @@ public class ProductController {
                     content = @Content
             )
     })
+
     @PostMapping
     public ResponseEntity<ProductResponseDTO> create(
             @Valid @RequestBody ProductRequestDTO request
     ) {
-        Product product = productMapper.toEntity(request);
-        Product createdProduct = productService.create(product);
+        ProductResponseDTO response = productService.create(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(productMapper.toResponse(createdProduct));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(
@@ -79,14 +78,14 @@ public class ProductController {
                     content = @Content
             )
     })
+
     @GetMapping
     public ResponseEntity<Page<ProductResponseDTO>> findAll(
             @ParameterObject
             @PageableDefault(page = 0, size = 10)
             Pageable pageable
     ) {
-        Page<Product> products = productService.findAll(pageable);
-        return ResponseEntity.ok(products.map(productMapper::toResponse));
+        return ResponseEntity.ok(productService.findAll(pageable));
     }
 
 
@@ -110,10 +109,12 @@ public class ProductController {
                     content = @Content
             )
     })
+
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> findById(@PathVariable UUID id) {
-        Product product = productService.findById(id);
-        return ResponseEntity.ok(productMapper.toResponse(product));
+    public ResponseEntity<ProductResponseDTO> findById(
+            @PathVariable UUID id
+    ) {
+        return ResponseEntity.ok(productService.findById(id));
     }
 
     @Operation(
@@ -136,14 +137,13 @@ public class ProductController {
                     content = @Content
             )
     })
+
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> update(
             @PathVariable UUID id,
             @Valid @RequestBody ProductRequestDTO request
     ) {
-        Product productToUpdate = productMapper.toEntity(request);
-        Product updatedProduct = productService.update(id, productToUpdate);
-        return ResponseEntity.ok(productMapper.toResponse(updatedProduct));
+        return ResponseEntity.ok(productService.update(id, request));
     }
 
     @Operation(
@@ -166,6 +166,7 @@ public class ProductController {
                     content = @Content
             )
     })
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         productService.delete(id);

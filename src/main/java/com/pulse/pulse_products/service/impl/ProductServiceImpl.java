@@ -1,6 +1,9 @@
 package com.pulse.pulse_products.service.impl;
+import com.pulse.pulse_products.dto.request.ProductRequestDTO;
+import com.pulse.pulse_products.dto.response.ProductResponseDTO;
 import com.pulse.pulse_products.exceptions.NotFoundException;
 import com.pulse.pulse_products.entity.Product;
+import com.pulse.pulse_products.mapper.ProductMapper;
 import com.pulse.pulse_products.repository.ProductRepository;
 
 
@@ -19,33 +22,44 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     @Override
-    public Product create(Product product) {
-        return productRepository.save(product);
+    public ProductResponseDTO create(ProductRequestDTO request) {
+        Product product = productMapper.toEntity(request);
+
+        Product savedProduct = productRepository.save(product);
+
+        return productMapper.toResponseDTO(savedProduct);
     }
 
     @Override
-    public Page<Product> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Page<ProductResponseDTO> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable)
+                .map(productMapper::toResponseDTO);
     }
 
     @Override
-    public Product findById(UUID id) {
-        return findProductOrThrow(id);
+    public ProductResponseDTO findById(UUID id) {
+        Product product = findProductOrThrow(id);
+
+        return productMapper.toResponseDTO(product);
     }
 
     @Override
     @Transactional
-    public Product update(UUID id, Product productToUpdate) {
+    public ProductResponseDTO update(
+            UUID id,
+            ProductRequestDTO request
+    ) {
         Product product = findProductOrThrow(id);
 
-        product.setName(productToUpdate.getName());
-        product.setDescription(productToUpdate.getDescription());
-        product.setPrice(productToUpdate.getPrice());
-        product.setAmount(productToUpdate.getAmount());
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        product.setAmount(request.amount());
 
-        return product;
+        return productMapper.toResponseDTO(product);
     }
 
     @Override

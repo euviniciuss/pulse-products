@@ -18,7 +18,7 @@ public class ProductMapper {
         return product;
     }
 
-    public ProductResponseDTO toResponse(Product product) {
+    public ProductResponseDTO toResponseDTO(Product product) {
         return ProductResponseDTO.from(product);
     }
 }
