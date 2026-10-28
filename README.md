@@ -35,7 +35,7 @@ O projeto implementa operações de CRUD, validação de dados, paginação, tra
 
 ## Arquitetura
 
-A aplicação utiliza **arquitetura em camadas**, separando as responsabilidades para facilitar a manutenção, os testes e a evolução do código.
+A imagem a seguir apresenta uma visão geral da arquitetura e do funcionamento da aplicação, destacando seus principais componentes e como eles se relacionam.
 
 ![Arquitetura da aplicação](docs/images/arquitetura.webp)
 
